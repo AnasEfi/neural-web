@@ -8,10 +8,7 @@ public:
     int limit = 9; // learning threshold
     int sum; // sum scaled signals
 public:
-    WebE(int sizex, int sizey, int inP[7][7])     //constructor of object
-    {
-        weight = new int[7][7];
-    }
+    WebE();  //constructor of object
 
     void mul_w();
 
@@ -22,5 +19,7 @@ public:
     void LoadWeight();
 
     void recognize(WebE& myWeb);
+    void incW(int inP[5][7]);
+    void decW(int inP[5][7]);
 };
 

@@ -1,12 +1,54 @@
 // Neural networks.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
+#include "WebE.h"
+#include <string>
+#include <fstream>
 #include <iostream>
+
+using namespace std;
+
+void PrintMenu()
+{
+	cout << "1.Study" << endl
+		<< "2.Recognize" << endl
+		<< "3.Exit" << endl
+		<< "Choice:";
+}
 
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	while (1) {
+		PrintMenu();
+		int x;
+		cin >> x;
+		switch(x) {
+		case 1:
+		{
+			WebE myweb;                      //clean Web
+			for (int i = 0; i <= 4; i++)
+				for (int j = 0; j <= 6; j++)
+					myweb.weight[i][j] = 0;
+
+		}
+		case 2:
+		{
+
+
+		}
+		case 3:
+		{
+			return 0;
+			break;
+		}
+		default:
+		{
+			cout << "Error" << endl;
+		}
+		}
+		cout << '\n';
+	}
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

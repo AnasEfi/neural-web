@@ -5,6 +5,11 @@
 #include <iostream>
 using namespace std;
 
+WebE::WebE()
+{
+}
+
+
 void WebE::mul_w() //scaled
 {
     for (int x = 0; x <= 4; x++)
@@ -52,6 +57,35 @@ void WebE::Sum()
  {
      myWeb.mul_w();
      myWeb.Sum();
-     if (myWeb.Compare()) listBox1.Items.Add(" - True, Sum = " + Convert.ToString(NW1.sum));
-     else listBox1.Items.Add(" - False, Sum = " + Convert.ToString(NW1.sum));
+     if (myWeb.Compare())
+     {
+         cout << " - True<<'\n'<< Sum = " << sum << endl;
+     }
+     else
+         cout << " - False<<'\n'<< Sum = " << sum << endl;
  }
+ 
+ void WebE::incW(int inP[5][7])
+ {
+     for (int x = 0; x <= 2; x++)
+     {
+         for (int y = 0; y <= 4; y++)
+         {
+             weight[x][y] += inP[x][y];
+         }
+     }
+ }
+ void WebE::decW(int inP[5][7])
+ {
+     for (int x = 0; x <= 4; x++)
+     {
+         for (int y = 0; y <= 6; y++)
+         {
+             weight[x][y] -= inP[x][y];
+         }
+     }
+ }
+
+
+
+
