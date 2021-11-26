@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 
+
 using namespace std;
 
 // Устанавливаем правильную/неправильную матрицу перед проверкой
@@ -19,9 +20,9 @@ void Neuron::setup_input(int** matrix)
 // Первое, что мы вызываем при обучении и распозновании
 //
 // Если обучаем то:
-// Допустим, что вход получена верная матрица, впервые, на первом кругу из 55 итераций всех наших файлов,
+// Допустим, что вход получена верная матрица, впервые, на первом кругу из 45 итераций всех наших файлов,
 // тогда в аксоне будут все нули, НО, читаем следующее допустим и понимаем, в какой момент появятся единицы
-// Допустим, что на вход получена верная матрица, но уже после первого круга из 55 итераций всех файлов,
+// Допустим, что на вход получена верная матрица, но уже после первого круга из 45 итераций всех файлов,
 // после того, как мы их прогнали, в нашем методе study вызывался метод add_weight у верных вариантов, т.к.
 // в study приходила информация от нас, что матрица точно верная, при этом нейрон считал, что это не так, срабатывало
 // условие true > false и мы прибавляли к весу нейрона, вес верной матрицы.
@@ -40,11 +41,10 @@ void Neuron::get_axon()
 		}
 	}
 }
-
 // Узнаем сумму весов текущего обучения
-int Neuron::get_weight_sum()
+void Neuron::get_weight_sum()
 {
-	int sum = 0;
+	sum = 0;
 	for (int c = 0; c < Neuron::cols; c++)
 	{
 		for (int r = 0; r < Neuron::rows; r++)
@@ -52,15 +52,13 @@ int Neuron::get_weight_sum()
 			sum += axon[c][r];
 		}
 	}
-	weight_sum = sum;
-	return sum;
 }
 
 // Проверям, не дошли ли мы до порога, чтобы завершить обучение
 // !! Если этот метод вызван из recognize(), то это проверка на то верно ли распознан символ
 bool Neuron::check_result()
 {
-	if (weight_sum >= weight_limit)
+	if (sum >= weight_limit)
 		return true;
 	else return false;
 }
@@ -96,13 +94,13 @@ void Neuron::recognize_letter()
 	get_axon();
 	get_weight_sum();
 
-	if (check_result() == true) cout << "Recognize result: [Successfull], axon sum: [" << weight_sum << "]" << endl;
-	else cout << "Recognize result: [Bad], axon sum: [" << weight_sum << "]" << endl;
+	if (check_result() == true) cout << "Recognize result: [Successfull], axon sum: [" << sum << "]" << endl;
+	else cout << "Recognize result: [Bad], axon sum: [" << sum << "]" << endl;
 }
 
 // Возвращает false, если нейросеть ошиблась
 // Возвращает true, если сеть поняла символ
-bool Neuron::study(bool real_result)
+void Neuron::study(bool real_result, int& restudy)
 {
 	get_axon();
 	get_weight_sum();
@@ -110,38 +108,36 @@ bool Neuron::study(bool real_result)
 	auto result_from_ai = check_result();
 	if (real_result > result_from_ai)
 	{
-		add_weight();
-		return false;
+		add_weight(input_matrix);
+		restudy += 1;
 	}
 	else if(real_result < result_from_ai)
 	{
-		decrease_weight();
-		return false;
+		decrease_weight(input_matrix);
+		restudy += 1;
 	}
-
-	return true;
 }
 
 // Добавляем вес правильной матрицы к весу нейрона
-void Neuron::add_weight()
+void Neuron::add_weight(int input[7][5])
 {
 	for (int c = 0; c < Neuron::cols; c++)
 	{
 		for (int r = 0; r < Neuron::rows; r++)
 		{
-			weight[c][r] += input_matrix[c][r];
+			weight[c][r] += input[c][r];
 		}
 	}
 }
 
 // Уменьшаем вес нейрона на вес неправильной матрицы
-void Neuron::decrease_weight()
+void Neuron::decrease_weight(int input[7][5])
 {
 	for (int c = 0; c < Neuron::cols; c++)
 	{
 		for (int r = 0; r < Neuron::rows; r++)
 		{
-			weight[c][r] -= input_matrix[c][r];
+			weight[c][r] -= input[c][r];
 		}
 	}
 }

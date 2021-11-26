@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <memory>
 
 using namespace std;
 
@@ -57,13 +58,13 @@ void study()
 
 	// Записываем все наши имена файлов в вектор
 	// < 40 -> Неверные варианты
-	// > 40 -> Верные варианты [40..44]
+	// > 40 -> Верные варианты [40..54]
 	vector<string> files;
 	for (int i = 0; i < 55; i++)
 	{
 		string filename;
 		if (i < 40) filename = "examples/bad/" + to_string(i) + ".txt";
-		else filename = "examples/good/e" + to_string(i+1-40) + ".txt";
+		else filename = "examples/good/e" + to_string(i-40) + ".txt";
 
 		files.push_back(filename);
 	}
@@ -71,21 +72,24 @@ void study()
 	vector<int**> all_matrix = get_letters_matrix_from_file(files);
 
 	// restudy станет false, если файлы будут распознаны верно
-	bool restudy = true;
+	//bool restudy = true;
+	int restudy = 1;
 	int iterations = 0;
-	while (restudy)
+	while (restudy !=0)
 	{
+		restudy = 0;
 		int counter = 0;
 		for (auto item : all_matrix)
 		{
 			neuron.setup_input(item);
-			if (counter < 40) restudy = !neuron.study(false); // Неверные варианты
-			else restudy = !neuron.study(true); // Верные варианты
+			if (counter < 40) neuron.study(false,restudy); // Неверные варианты
+			else neuron.study(true,restudy); // Верные варианты
 
 			counter++;
 		}
 		cout << "round: " << ++iterations << endl;
-	}
+	} 
+
 	cout << "Study complete." << endl;
 
 	string filename_weight;
