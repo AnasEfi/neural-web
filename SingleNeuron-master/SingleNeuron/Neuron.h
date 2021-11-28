@@ -7,7 +7,7 @@ class Neuron
 {
 public:
 	static const int cols = 7, rows = 5;
-	static const int weight_limit = 100000;
+	static const int weight_limit = 100;
 	int weight[cols][rows];
 	int input_matrix[cols][rows];
 	void get_axon();

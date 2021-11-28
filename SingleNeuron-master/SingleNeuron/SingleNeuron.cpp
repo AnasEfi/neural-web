@@ -72,24 +72,24 @@ void study()
 	vector<int**> all_matrix = get_letters_matrix_from_file(files);
 
 	// restudy станет false, если файлы будут распознаны верно
-	//bool restudy = true;
 	int restudy = 1;
 	int iterations = 0;
-	while (restudy !=0)
+	while (restudy != 0)
 	{
+		++iterations; 
 		restudy = 0;
 		int counter = 0;
 		for (auto item : all_matrix)
 		{
 			neuron.setup_input(item);
-			if (counter < 40) neuron.study(false,restudy); // Неверные варианты
-			else neuron.study(true,restudy); // Верные варианты
+			if (counter < 40) neuron.study(false, restudy); // Неверные варианты
+			else neuron.study(true, restudy); // Верные варианты
 
 			counter++;
-		}
-		cout << "round: " << ++iterations << endl;
-	} 
 
+		}
+	} 
+	cout << "count: " << iterations << endl;
 	cout << "Study complete." << endl;
 
 	string filename_weight;
